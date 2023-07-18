@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using WebApiCursos.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,11 +10,19 @@ namespace WebApiCursos.Controllers
 	[ApiController]
 	public class CursosController : ControllerBase
 	{
-		// GET: api/<CursosController>
-		[HttpGet]	
-		public IEnumerable<string> Get()
+		private readonly ICoursesProvider coursesProvider;
+
+		public CursosController(ICoursesProvider coursesProvider)
+        {
+			this.coursesProvider = coursesProvider;
+		}
+
+
+        // GET: api/<CursosController>
+        [HttpGet]	
+		public IActionResult Get()
 		{
-			return new string[] { "value1", "value2" };
+			return Ok(10);
 		}
 
 		// GET api/<CursosController>/5
