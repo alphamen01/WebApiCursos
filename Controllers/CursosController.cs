@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebApiCursos.Interfaces;
+using WebApiCursos.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,28 +21,66 @@ namespace WebApiCursos.Controllers
 
         // GET: api/<CursosController>
         [HttpGet]	
-		public IActionResult Get()
+		public async Task<IActionResult> GetAllAsync()
 		{
-			return Ok(10);
-		}
+			var results = await coursesProvider.GetAllAsync();
+            if (results != null)
+            {
+				return Ok(results);
+            }
+			return NotFound();
+        }
 
 		// GET api/<CursosController>/5
 		[HttpGet("{id}")]
-		public string Get(int id)
+		public async Task<IActionResult> GetAsync(int id)
 		{
-			return "value";
+			var result = await coursesProvider.GetAsync(id);
+			if (result != null)
+			{
+				return Ok(result);
+			}
+			return NotFound(id);
+
+		}
+
+		[HttpGet("search/{search}")]
+		public async Task<IActionResult> SearchAsync(string search)
+		{
+			var results = await coursesProvider.SearchAsync(search);
+			if (results != null)
+			{
+				return Ok(results);
+			}
+			return NotFound(search);
 		}
 
 		// POST api/<CursosController>
 		[HttpPost]
-		public void Post([FromBody] string value)
+		public async Task<IActionResult> AddAsync(Course course)
 		{
+            if (course == null)
+            {
+				return BadRequest();
+            }
+			var result = await coursesProvider.AddAsync(course);
+			if (result.IsSuccess)
+			{
+				return Ok(result.Id);
+			}
+			return NotFound();
 		}
 
 		// PUT api/<CursosController>/5
 		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] string value)
+		public async Task<IActionResult> UpdateAsync(int id, Course course)
 		{
+			var result = await coursesProvider.UpdateAsync(id, course);
+			if (result)
+			{
+				return Ok();
+			}
+			return NotFound();
 		}
 
 		// DELETE api/<CursosController>/5
