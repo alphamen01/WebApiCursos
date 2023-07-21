@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using WebApiCursos.Context;
 using WebApiCursos.Interfaces;
 using WebApiCursos.Models;
 
@@ -7,29 +10,43 @@ namespace WebApiCursos.Providers
 {
 	public class SqlServerCourseProvider : ICoursesProvider
 	{
-		public Task<(bool IsSuccess, int? Id)> AddAsync(Course course)
+		public async Task<(bool IsSuccess, int? Id)> AddAsync(Course course)
 		{
-			throw new System.NotImplementedException();
+			var db = new CoursesDbContext();
+			db.Courses.Add(course);
+			var newId = await db.SaveChangesAsync();
+			return(true, newId);
 		}
 
-		public Task<ICollection<Course>> GetAllAsync()
+		public async Task<ICollection<Course>> GetAllAsync()
 		{
-			throw new System.NotImplementedException();
+			var db = new CoursesDbContext();
+			var results = await db.Courses.ToListAsync();
+			return results;
 		}
 
-		public Task<Course> GetAsync(int id)
+		public async Task<Course> GetAsync(int id)
 		{
-			throw new System.NotImplementedException();
+			var db = new CoursesDbContext();
+			var result = await db.Courses.FirstOrDefaultAsync(c =>
+			c.Id == id);
+			return result;
 		}
 
-		public Task<ICollection<Course>> SearchAsync(string search)
+		public async Task<ICollection<Course>> SearchAsync(string search)
 		{
-			throw new System.NotImplementedException();
+			var db = new CoursesDbContext();
+			var raw = db.Courses.FromSqlRaw($"SELECT * FROM Courses WHERE Name LIKE '%{search}%'");
+			var results = await raw.ToListAsync();
+			return results;
 		}
 
-		public Task<bool> UpdateAsync(int id, Course course)
+		public async Task<bool> UpdateAsync(int id, Course course)
 		{
-			throw new System.NotImplementedException();
+			var db = new CoursesDbContext();
+			db.Courses.Update(course);
+			var result = await db.SaveChangesAsync();
+			return result == 1;
 		}
 	}
 }
