@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WebApiCursos.Context;
@@ -16,6 +17,34 @@ namespace WebApiCursos.Providers
 			db.Courses.Add(course);
 			var newId = await db.SaveChangesAsync();
 			return(true, newId);
+		}
+
+		public async Task<bool> DeleteAsync(int id)
+		{
+			var db = new CoursesDbContext();
+			var result = db.Courses.Where(c => c.Id == id).FirstOrDefault();
+			if (result == null) {
+				return false;
+			} 
+            
+			db.Courses.Remove(result);
+			await db.SaveChangesAsync();
+			return true;
+            
+        }
+
+		public async Task<Course> EliminarAsync(int id)
+		{
+			var db = new CoursesDbContext();
+			var result = await db.Courses.FirstOrDefaultAsync(c =>
+			c.Id == id);
+			if (result != null) { 
+				db.Courses.Remove(result);
+				await db.SaveChangesAsync();
+				return result;
+			}
+
+			return null;
 		}
 
 		public async Task<ICollection<Course>> GetAllAsync()

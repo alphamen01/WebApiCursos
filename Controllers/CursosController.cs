@@ -85,8 +85,14 @@ namespace WebApiCursos.Controllers
 
 		// DELETE api/<CursosController>/5
 		[HttpDelete("{id}")]
-		public void Delete(int id)
+		public async Task<IActionResult> Delete(int id)
 		{
-		}
+			var result = await coursesProvider.EliminarAsync(id);
+            if (result != null)
+            {
+				return NoContent();	
+            }
+            return NotFound();			
+        }
 	}
 }

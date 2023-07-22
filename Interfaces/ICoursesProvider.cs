@@ -14,6 +14,10 @@ namespace WebApiCursos.Interfaces
         Task<bool> UpdateAsync(int id, Course  course);
 
         Task<(bool IsSuccess, int? Id)> AddAsync(Course course);
-        
-    }
+
+		Task<bool> DeleteAsync(int id);
+
+		Task<Course> EliminarAsync(int id);
+
+	}
 }

@@ -47,7 +47,17 @@ namespace WebApiCursos.Providers
             return Task.FromResult((true, (int?)course.Id));
         }
 
-        public Task<ICollection<Course>> GetAllAsync()
+		public Task<bool> DeleteAsync(int id)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Task<Course> EliminarAsync(int id)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Task<ICollection<Course>> GetAllAsync()
         {
             return Task.FromResult((ICollection<Course>)repo.ToList());
         }
