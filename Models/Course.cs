@@ -15,9 +15,9 @@ namespace WebApiCursos.Models
 		[Display(Name = "Descripcion")]
 		public string Description { get; set; }
 
-		[Required(ErrorMessage = "El(La) autor(a) es requerido(a)")]
-		[Display(Name = "Autor")]
-		public string Author { get; set; }
+		[Required(ErrorMessage = "El(La) docente es requerido(a)")]
+		[Display(Name = "Docente")]
+		public string Teacher { get; set; }
 
 		[Url(ErrorMessage = "La direccion no es valida")]
 		[Display(Name = "Url")]
