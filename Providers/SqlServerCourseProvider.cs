@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WebApiCursos.Context;
 using WebApiCursos.Interfaces;
@@ -54,7 +54,43 @@ namespace WebApiCursos.Providers
 			return results;
 		}
 
-		public async Task<Course> GetAsync(int id)
+        public async Task<ICollection<Course>> GetAllAsyncPag(int pageSize, int pageNumber)
+        {
+            var db = new CoursesDbContext();
+            var results = await db.Courses.ToListAsync();
+            var paginatedItems = results
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+            return paginatedItems;
+        }
+
+        public async Task<Pager> GetAllAsyncPaginado(int page,int size)
+        {
+           var db = new CoursesDbContext();
+
+			var pageSize = size;
+            var pageCount = Math.Ceiling(db.Courses.Count() / (decimal)pageSize);
+			var records = db.Courses.Count();
+
+            var courses = await db.Courses
+                .Skip((page - 1) * (int)pageSize)
+				.Take((int)pageSize)
+				.ToListAsync();
+
+            var results = new Pager
+            {
+                Courses = courses,
+                CurrentPage = page,
+                Pages = (int)pageCount,
+				Records = records
+            };
+
+            return results;
+			                      
+        }
+        public async Task<Course> GetAsync(int id)
 		{
 			var db = new CoursesDbContext();
 			var result = await db.Courses.FirstOrDefaultAsync(c =>

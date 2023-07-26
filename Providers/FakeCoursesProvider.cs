@@ -62,6 +62,16 @@ namespace WebApiCursos.Providers
             return Task.FromResult((ICollection<Course>)repo.ToList());
         }
 
+        public Task<ICollection<Course>> GetAllAsyncPag(int pageSize, int pageNumber)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<Pager> GetAllAsyncPaginado(int page, int size)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Task<Course> GetAsync(int id)
         {
             return Task.FromResult(repo.FirstOrDefault(c => c.Id == id));

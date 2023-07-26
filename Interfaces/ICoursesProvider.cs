@@ -19,5 +19,9 @@ namespace WebApiCursos.Interfaces
 
 		Task<Course> EliminarAsync(int id);
 
-	}
+        Task<ICollection<Course>> GetAllAsyncPag(int pageSize, int pageNumber);
+
+        Task<Pager> GetAllAsyncPaginado(int page, int size);
+
+    }
 }

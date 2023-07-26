@@ -31,8 +31,30 @@ namespace WebApiCursos.Controllers
 			return NotFound();
         }
 
-		// GET api/<CursosController>/5
-		[HttpGet("{id}")]
+        [HttpGet("pag")]
+        public async Task<IActionResult> GetAllAsyncPag(int pageSize, int pageNumber)
+        {
+            var results = await coursesProvider.GetAllAsyncPag(pageSize,pageNumber);
+            if (results != null)
+            {
+                return Ok(results);
+            }
+            return NotFound();
+        }
+
+        [HttpGet("paginado")]
+        public async Task<IActionResult> GetAllAsyncPaginado(int page, int size)
+        {
+            var results = await coursesProvider.GetAllAsyncPaginado(page, size);
+            if (results != null)
+            {
+                return Ok(results);
+            }
+            return NotFound();
+        }
+
+        // GET api/<CursosController>/5
+        [HttpGet("{id}")]
 		public async Task<IActionResult> GetAsync(int id)
 		{
 			var result = await coursesProvider.GetAsync(id);
