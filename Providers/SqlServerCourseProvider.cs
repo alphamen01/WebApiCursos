@@ -68,7 +68,8 @@ namespace WebApiCursos.Providers
 
         public async Task<Pager> GetAllAsyncPaginado(int page,int size)
         {
-           var db = new CoursesDbContext();
+            /*
+			  var db = new CoursesDbContext();
 
 			var pageSize = size;
             var pageCount = Math.Ceiling(db.Courses.Count() / (decimal)pageSize);
@@ -87,8 +88,27 @@ namespace WebApiCursos.Providers
 				Records = records
             };
 
-            return results;
-			                      
+            return results;			 
+			 */
+            var db = new CoursesDbContext();
+
+			var pageSize = size;
+			if (pageSize < 1)
+			{
+				pageSize = 1;
+			}
+			var records = db.Courses.Count();
+            var courses = await db.Courses
+                .Skip((page - 1) * (int)pageSize)
+				.Take((int)pageSize)
+				.ToListAsync();
+
+            var results = new Pager(records, page, size)
+			{
+				Courses = courses
+
+			};
+			return results;			                      
         }
         public async Task<Course> GetAsync(int id)
 		{
