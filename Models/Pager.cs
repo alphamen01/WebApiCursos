@@ -16,9 +16,9 @@ namespace WebApiCursos.Models
 
         public int TotalItems { get; set; }
         public int CurrentPage { get; set; }
-        public int PageSiZe { get; set; }
+        public int PageSize {get; set; }
         public int TotalPages { get; set; }
-        public int StarPage { get; set; }
+        public int StartPage { get; set; }
         public int EndPage { get; set; }
 
         public Pager()
@@ -51,9 +51,9 @@ namespace WebApiCursos.Models
 
             TotalItems = totalItems;
             CurrentPage = currentPage;
-            PageSiZe = pageSize;
+            PageSize = pageSize;
             TotalPages = totalPages;
-            StarPage = startPage;
+            StartPage = startPage;
             EndPage = endPage;
             
 
