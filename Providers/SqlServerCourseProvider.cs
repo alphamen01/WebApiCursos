@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using WebApiCursos.Context;
 using WebApiCursos.Interfaces;
@@ -122,11 +125,32 @@ namespace WebApiCursos.Providers
 		{
 			var db = new CoursesDbContext();
 			var raw = db.Courses.FromSqlRaw($"SELECT * FROM Courses WHERE Name LIKE '%{search}%'");
+
+
 			var results = await raw.ToListAsync();
 			return results;
 		}
 
-		public async Task<bool> UpdateAsync(int id, Course course)
+        public async Task<Pager> SearchAsyncPaginado(string search)
+        {
+            var db = new CoursesDbContext();
+            var raw = db.Courses.FromSqlRaw($"SELECT * FROM Courses WHERE Name LIKE '%{search}%'");
+            var records = await raw.CountAsync();
+			int page = 1;
+			int size = 3;
+
+            var results = await raw.Skip((page - 1) * size).Take(size).ToListAsync();
+
+
+            var pager = new Pager(records, page, size)
+            {
+                Courses = results
+
+            };
+            return pager;
+        }
+
+        public async Task<bool> UpdateAsync(int id, Course course)
 		{
 			var db = new CoursesDbContext();
 			db.Courses.Update(course);

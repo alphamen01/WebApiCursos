@@ -82,6 +82,11 @@ namespace WebApiCursos.Providers
             return Task.FromResult((ICollection<Course>)repo.Where(c => c.Name.ToLowerInvariant().Contains(search.ToLowerInvariant())).ToList());
         }
 
+        public Task<Pager> SearchAsyncPaginado(string search)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Task<bool> UpdateAsync(int id, Course course)
         {
             var courseToUpdate = repo.FirstOrDefault(c => c.Id == id);
