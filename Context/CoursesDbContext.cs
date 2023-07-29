@@ -11,5 +11,6 @@ namespace WebApiCursos.Context
 		}
 
 		public DbSet<Course> Courses { get; set; }
-    }
+		public DbSet<Material> Materials { get; set; }
+	}
 }
