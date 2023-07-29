@@ -28,6 +28,7 @@ namespace WebApiCursos
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddSingleton<ICoursesProvider, SqlServerCourseProvider>();
+			services.AddSingleton<IMaterialsProvider, SqlServerMaterialProvider>();
 			services.AddControllers();
 		}
 
