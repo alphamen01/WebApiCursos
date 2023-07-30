@@ -21,25 +21,20 @@ namespace WebApiCursos.Providers
         public async Task<PagerMaterial> GetAllMaterialsAsyncPaginado(int id, int page, int size)
         {
             var db = new CoursesDbContext();
-
-            var pageSize = size;
-            if (pageSize < 1)
+            var raw = db.Materials.FromSqlRaw($"SELECT * FROM Materials WHERE CourseId = '{id}'");
+            var records = await raw.CountAsync();
+            if (size < 1)
             {
-                pageSize = 1;
+                size = 1;
             }
-            var materials = await db.Materials.FromSqlRaw($"SELECT * FROM Materials WHERE CourseId = '{id}'").ToListAsync();
-                /*.Skip((page - 1) * (int)pageSize)
-                .Take((int)pageSize)
-                .ToListAsync();*/
-
-            var records = materials.Count();
-
-            var results = new PagerMaterial(records, page, size)
+            var results = await raw.Skip((page - 1) * size).Take(size).ToListAsync();
+            
+            var pagermaterials = new PagerMaterial(records, page, size)
             {
-                Materials = materials
+                Materials = results
 
             };
-            return results;
+            return pagermaterials;
 
         }
     }

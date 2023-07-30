@@ -101,10 +101,10 @@ namespace WebApiCursos.Providers
 				pageSize = 1;
 			}
 			var records = db.Courses.Count();
-			var courses = await db.Courses.ToListAsync();
-                /*.Skip((page - 1) * (int)pageSize)
+			var courses = await db.Courses
+                .Skip((page - 1) * (int)pageSize)
 				.Take((int)pageSize)
-				.ToListAsync();*/
+				.ToListAsync();
 
             var results = new Pager(records, page, size)
 			{
@@ -139,8 +139,8 @@ namespace WebApiCursos.Providers
 			int page = 1;
 			int size = 3;
 
-            //var results = await raw.Skip((page - 1) * size).Take(size).ToListAsync();
-            var results = await raw.ToListAsync();
+            var results = await raw.Skip((page - 1) * size).Take(size).ToListAsync();
+            
 
             var pager = new Pager(records, page, size)
             {
