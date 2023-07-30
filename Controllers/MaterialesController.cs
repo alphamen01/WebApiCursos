@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApiCursos.Interfaces;
+using WebApiCursos.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -34,11 +35,16 @@ namespace WebApiCursos.Controllers
 		}
 
 		// GET api/<MaterialesController>/5
-		/*[HttpGet("{id}")]
-		public string Get(int id)
-		{
-			return "value";
-		}*/
+		[HttpGet("paginado")]
+        public async Task<IActionResult> GetAllMaterialsAsyncPaginado(int id, int page, int size)
+        {
+            var results = await materialsProvider.GetAllMaterialsAsyncPaginado(id,page, size);
+            if (results != null)
+            {
+                return Ok(results);
+            }
+            return NotFound();
+        }
 
 		// POST api/<MaterialesController>
 		[HttpPost]
