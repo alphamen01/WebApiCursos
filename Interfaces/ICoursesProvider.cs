@@ -23,7 +23,7 @@ namespace WebApiCursos.Interfaces
 
         Task<Pager> GetAllAsyncPaginado(int page, int size);
 
-        Task<Pager> SearchAsyncPaginado(string search);
+        Task<Pager> SearchAsyncPaginado(string search, int page, int size);
 
     }
 }

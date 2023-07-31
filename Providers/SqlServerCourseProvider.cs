@@ -131,13 +131,13 @@ namespace WebApiCursos.Providers
 			return results;
 		}
 
-        public async Task<Pager> SearchAsyncPaginado(string search)
+        public async Task<Pager> SearchAsyncPaginado(string search, int page, int size)
         {
             var db = new CoursesDbContext();
             var raw = db.Courses.FromSqlRaw($"SELECT * FROM Courses WHERE Name LIKE '%{search}%'");
             var records = await raw.CountAsync();
-			int page = 1;
-			int size = 3;
+			//int page = 1;
+			//int size = 3;
 
             var results = await raw.Skip((page - 1) * size).Take(size).ToListAsync();
             

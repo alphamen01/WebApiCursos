@@ -77,10 +77,10 @@ namespace WebApiCursos.Controllers
 			return NotFound(search);
 		}
 
-        [HttpGet("searchpaginado/{search}")]
-        public async Task<IActionResult> SearchAsyncPaginado(string search)
+        [HttpGet("searchpaginado")]
+        public async Task<IActionResult> SearchAsyncPaginado(string search, int page, int size)
         {
-            var results = await coursesProvider.SearchAsyncPaginado(search);
+            var results = await coursesProvider.SearchAsyncPaginado(search,page,size);
             if (results != null)
             {
                 return Ok(results);
