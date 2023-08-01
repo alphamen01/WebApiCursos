@@ -10,18 +10,25 @@ namespace WebApiCursos.Providers
 {
 	public class SqlServerMaterialProvider : IMaterialsProvider
 	{
-		public async Task<ICollection<Material>> GetAllMaterialsAsync(int id)
+        private readonly CoursesDbContext context;
+
+        public SqlServerMaterialProvider(CoursesDbContext context)
+        {
+            this.context = context;
+        }
+
+        public async Task<ICollection<Material>> GetAllMaterialsAsync(int id)
 		{
-			var db = new CoursesDbContext();
-			var raw = db.Materials.FromSqlRaw($"SELECT * FROM Materials WHERE CourseId = '{id}'");
+			//var db = new CoursesDbContext();
+			var raw = context.Materials.FromSqlRaw($"SELECT * FROM Materials WHERE CourseId = '{id}'");
 			var results = await raw.ToListAsync();
 			return results;
 		}
 
         public async Task<PagerMaterial> GetAllMaterialsAsyncPaginado(int id, int page, int size)
         {
-            var db = new CoursesDbContext();
-            var raw = db.Materials.FromSqlRaw($"SELECT * FROM Materials WHERE CourseId = '{id}'");
+            //var db = new CoursesDbContext();
+            var raw = context.Materials.FromSqlRaw($"SELECT * FROM Materials WHERE CourseId = '{id}'");
             var records = await raw.CountAsync();
             if (size < 1)
             {
