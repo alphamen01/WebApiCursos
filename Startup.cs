@@ -35,6 +35,11 @@ namespace WebApiCursos
             services.AddScoped<ICoursesProvider, SqlServerCourseProvider>();
             services.AddScoped<IMaterialsProvider, SqlServerMaterialProvider>();
             services.AddControllers();
+			//CORS
+			services.AddCors(options => options.AddPolicy("AllowWebapp",
+										builder => builder.AllowAnyOrigin()
+														.AllowAnyHeader()
+														.AllowAnyMethod()));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +49,8 @@ namespace WebApiCursos
 			{
 				app.UseDeveloperExceptionPage();
 			}
+
+			app.UseCors("AllowWebapp");
 
 			app.UseHttpsRedirection();
 
