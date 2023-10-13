@@ -1,0 +1,43 @@
+//webapistudent
+Scaffold-DbContext "Server=sqlserver.cttk8gyj8bcf.us-east-1.rds.amazonaws.com;Database=proyecto;Trust Server Certificate = true;User ID=sa;Password=Lesg2022; MultipleActiveResultSets = true" Microsoft.EntityFrameworkCore.SqlServer -ContextDir "Context" -OutputDir "Models"
+Scaffold-DbContext "Host=postgresql.cttk8gyj8bcf.us-east-1.rds.amazonaws.com;Database=prueba;Username=postgres;Password=Lesg2022" Npgsql.EntityFrameworkCore.PostgreSQL -ContextDir "Context" -OutputDir "Models" -DataAnnotations
+
+//webapicurso
+dotnet-ef dbcontext info
+dotnet-ef migrations add [nombre]
+dotnet-ef migrations list
+dotnet-ef database update
+
+
+CREATE TABLE [dbo].[Courses](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](150) NOT NULL,
+	[Description] [nvarchar](500) NOT NULL,
+	[Teacher] [nvarchar](150) NOT NULL,
+	[Uri] [nvarchar](150) NOT NULL,
+ CONSTRAINT [PK_Courses] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Materials](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CourseId] [int] NOT NULL,
+	[Name] [nvarchar](150) NOT NULL,
+	[Description] [nvarchar](500) NOT NULL,
+ CONSTRAINT [PK_Materials] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Materials]  WITH CHECK ADD  CONSTRAINT [FK_Materials_Courses_CourseId] FOREIGN KEY([CourseId])
+REFERENCES [dbo].[Courses] ([Id])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[Materials] CHECK CONSTRAINT [FK_Materials_Courses_CourseId]
+GO
